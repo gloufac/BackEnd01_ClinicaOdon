@@ -39,7 +39,7 @@ public class OdontologoTestService {
         BaseDatos.crearTablas(); // se tuvo que haber creado un registro
         OdontologoServiceImpl odontologoService = new OdontologoServiceImpl();
         Integer buscar1 = 1;
-        Odontologo odontologo = odontologoService.buscarPorID(buscar1);
+        Odontologo odontologo = odontologoService.buscarPorId(buscar1);
         //Assertions.assertEquals("ODO-1234", odontologo.getNumeroMatricula());
     }
 
