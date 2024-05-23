@@ -16,5 +16,3 @@ ClinicaOdontologica\ClinicaOdontologicaApplication.class
 ClinicaOdontologica\service\PacienteService.class
 ClinicaOdontologica\model\Odontologo.class
 ClinicaOdontologica\model\Paciente.class
-ClinicaOdontologica\PacienteTestService.class
-ClinicaOdontologica\OdontologoTestService.class
