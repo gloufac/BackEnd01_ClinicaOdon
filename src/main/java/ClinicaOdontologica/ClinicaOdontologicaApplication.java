@@ -13,7 +13,7 @@ public class ClinicaOdontologicaApplication {
 	private static final Logger logger = Logger.getLogger(ClinicaOdontologicaApplication.class);
 	public static void main(String[] args) {
 		SpringApplication.run(ClinicaOdontologicaApplication.class, args);
-		logger.info("Inicializando aplicacion");
+		logger.info("Aplicacion web iniciada ...");
 	}
 
 }

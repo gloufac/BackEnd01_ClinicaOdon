@@ -1,5 +1,6 @@
 package ClinicaOdontologica.controller;
 
+import ClinicaOdontologica.dao.BaseDatos;
 import ClinicaOdontologica.model.Odontologo;
 import ClinicaOdontologica.service.OdontologoService;
 import org.apache.log4j.Logger;
@@ -19,6 +20,7 @@ public class OdontologoController {
     @Autowired
     public OdontologoController(OdontologoService odontologoService) {
         this.odontologoService = odontologoService;
+        BaseDatos.crearTablas();
     }
 
     @GetMapping("/sas")
@@ -28,7 +30,7 @@ public class OdontologoController {
 
     @GetMapping
     public List<Odontologo> getOdontologos() {
-        return odontologoService.listaOdontologos();
+        return odontologoService.buscarTodos();
     }
 
 }

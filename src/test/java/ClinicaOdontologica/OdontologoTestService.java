@@ -3,22 +3,23 @@ package ClinicaOdontologica;
 import ClinicaOdontologica.dao.BaseDatos;
 import ClinicaOdontologica.dao.OdontologoDaoList;
 import ClinicaOdontologica.model.Odontologo;
-//import org.junit.jupiter.api.Assertions;
 import ClinicaOdontologica.service.OdontologoServiceImpl;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import java.util.List;
 
 public class OdontologoTestService {
     /**
      * Lista odontologos desde el hashmap
      */
-    //@Test
+    @Test
     public void  agregarOdontologoMap(){
         OdontologoDaoList odontologoDaoList = new OdontologoDaoList();
         Odontologo odontologo = new Odontologo("OD-1589", "Ramiro", "Gonzalez");
         Odontologo od2 = odontologoDaoList.guardar(odontologo);
-        //Assertions.assertTrue(od2 != null);
+        Assertions.assertTrue(od2 != null);
     }
-    //@Test
+    @Test
     public void  buscarTodosOdontologosMap(){
         OdontologoDaoList odontologoDaoList = new OdontologoDaoList();
         Odontologo odontologo = new Odontologo(1,"OD-1589", "Ramiro", "Gonzalez");
@@ -28,26 +29,26 @@ public class OdontologoTestService {
         odontologoDaoList.guardar(odontologo2);
         List<Odontologo> lstOdon = odontologoDaoList.buscarTodos();
 
-        //Assertions.assertTrue(lstOdon.stream().count() == 2);
+        Assertions.assertTrue(lstOdon.stream().count() == 2);
     }
 
     /**
      * Testear DAO Odontologo H2
      */
-    //@Test
+    @Test
     public void buscarOdontologoPorId(){
         BaseDatos.crearTablas(); // se tuvo que haber creado un registro
         OdontologoServiceImpl odontologoService = new OdontologoServiceImpl();
         Integer buscar1 = 1;
-        Odontologo odontologo = odontologoService.buscarPorID(buscar1);
-        //Assertions.assertEquals("ODO-1234", odontologo.getNumeroMatricula());
+        Odontologo odontologo = odontologoService.buscarPorId(buscar1);
+        Assertions.assertEquals("ODO-1234", odontologo.getNumeroMatricula());
     }
 
-    //@Test
+    @Test
     public void listarOdontologos(){
         BaseDatos.crearTablas();
         OdontologoServiceImpl odontologoService = new OdontologoServiceImpl();
         List<Odontologo> lstOdontologos = odontologoService.buscarTodos();
-        //Assertions.assertEquals(3, lstOdontologos.stream().count());
+        Assertions.assertEquals(3, lstOdontologos.stream().count());
     }
 }
