@@ -37,4 +37,6 @@ public interface OdontologoService {
      * @return
      */
     List<Odontologo> listaOdontologos();
+
+    void eliminar(Integer id);
 }
