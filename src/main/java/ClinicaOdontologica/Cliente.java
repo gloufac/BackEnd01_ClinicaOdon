@@ -14,7 +14,7 @@ public class Cliente {
 
         Paciente paciente = new Paciente("Argemiro", "Diaz", "12345"
                 , LocalDate.of(2024, 5, 20)
-                , new Domicilio("Calle X", 234, "Lima", "Peru"));
+                , new Domicilio("Calle X", 234, "Lima", "Peru"), "lalal@lala.com");
 
         PacienteService pacienteService = new PacienteService();
         pacienteService.guardarPaciente(paciente);

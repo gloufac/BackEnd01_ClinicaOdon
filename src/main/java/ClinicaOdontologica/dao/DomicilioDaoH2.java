@@ -96,4 +96,9 @@ public class DomicilioDaoH2 implements iDao<Domicilio> {
     public List<Domicilio> buscarTodos() {
         return List.of();
     }
+
+    @Override
+    public Domicilio buscarPorString(String valor) {
+        return null;
+    }
 }

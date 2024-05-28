@@ -1,5 +1,6 @@
 package ClinicaOdontologica.dao;
 
+import ClinicaOdontologica.model.Domicilio;
 import ClinicaOdontologica.model.Odontologo;
 
 import java.sql.Connection;
@@ -109,5 +110,10 @@ public class OdontologoDaoH2 implements iDao<Odontologo> {
             logger.warn(e.getMessage());
         }
         return lstOdontologos;
+    }
+
+    @Override
+    public Odontologo buscarPorString(String valor) {
+        return null;
     }
 }
