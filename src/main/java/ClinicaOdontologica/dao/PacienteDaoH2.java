@@ -11,13 +11,16 @@ import java.util.List;
 public class PacienteDaoH2 implements iDao<Paciente> {
     private static final Logger logger = Logger.getLogger(PacienteDaoH2.class);
     private final static String SQL_INSERT = "INSERT INTO pacientes" +
-            "(nombre,apellido,cedula,fecha_ingreso,domicilio_id)" +
-            "VALUES (?,?,?,?,?)";
+            "(nombre,apellido,cedula,fecha_ingreso,domicilio_id,email)" +
+            "VALUES (?,?,?,?,?,?)";
     private final static String SQL_UPDATE = "UPDATE pacientes " +
-            "SET nombre = ?,apellido = ?,cedula = ?,fecha_ingreso = ?,domicilio_id = ?)" + //??
+            "SET nombre = ?,apellido = ?,cedula = ?,fecha_ingreso = ?,domicilio_id = ?,email = ?)" + //??
             "WHERE id = ?";
     private static final String SQL_SELECT_ONE = "SELECT * FROM pacientes WHERE id = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM pacientes";
+    private static final String SQL_SELECT_BY_EMAIL ="SELECT * FROM pacientes WHERE EMAIL=?";
+
+    private static final String SQL_DELETE="DELETE FROM PACIENTES WHERE ID=? ";
 
     @Override
     public Paciente guardar(Paciente paciente) {
@@ -35,6 +38,7 @@ public class PacienteDaoH2 implements iDao<Paciente> {
             psInsert.setString(3, paciente.getCedula());
             psInsert.setDate(4, Date.valueOf(paciente.getFechaIngreso()));
             psInsert.setInt(5, domicilio.getId());
+            psInsert.setString(6, paciente.getEmail());
 
             psInsert.execute();
             ResultSet rs = psInsert.getGeneratedKeys(); // me retorna el id del paciente
@@ -70,7 +74,8 @@ public class PacienteDaoH2 implements iDao<Paciente> {
                         rs.getString(3),
                         rs.getString(4),
                         rs.getDate(5).toLocalDate(),
-                        domicilio1
+                        domicilio1,
+                        rs.getString(7)
                 );
             }
 
@@ -96,6 +101,7 @@ public class PacienteDaoH2 implements iDao<Paciente> {
             psUpdate.setString(3, paciente.getCedula());
             psUpdate.setDate(4, Date.valueOf(paciente.getFechaIngreso()));
             psUpdate.setInt(5, paciente.getDomicilio().getId());
+            psUpdate.setString(6, paciente.getEmail());
             psUpdate.execute();
         } catch (Exception e) {
             logger.warn(e.getMessage());
@@ -104,7 +110,20 @@ public class PacienteDaoH2 implements iDao<Paciente> {
 
     @Override
     public void eliminar(Integer id) {
+        logger.info("Eliminar por ID: " + id);
+        Connection connection = null;
 
+
+        try {
+            connection = BaseDatos.getConnection();
+            //Statement statement = connection.createStatement();
+            PreparedStatement psDelete = connection.prepareStatement(SQL_DELETE);
+            psDelete.setInt(1, id);
+            psDelete.execute();
+            logger.info("paciente eliminado");
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
     }
 
     @Override
@@ -128,7 +147,8 @@ public class PacienteDaoH2 implements iDao<Paciente> {
                         rs.getString(3),
                         rs.getString(4),
                         rs.getDate(5).toLocalDate(),
-                        domicilio
+                        domicilio,
+                        rs.getString(7)
                 );
                 pacientes.add(paciente);
             }
@@ -137,5 +157,29 @@ public class PacienteDaoH2 implements iDao<Paciente> {
             logger.error(e.getMessage());
         }
         return  pacientes;
+    }
+
+    @Override
+    public Paciente buscarPorString(String valor) {
+        logger.info("iniciando las operaciones de busqueda: "+valor);
+        Connection connection= null;
+        Paciente paciente= null;
+        Domicilio domicilio= null;
+        try{
+            connection= BaseDatos.getConnection();
+            PreparedStatement psSelectOne= connection.prepareStatement(SQL_SELECT_BY_EMAIL);
+            psSelectOne.setString(1,valor);
+            ResultSet rs= psSelectOne.executeQuery();
+            DomicilioDaoH2 daoAux= new DomicilioDaoH2();
+            while (rs.next()){
+                domicilio= daoAux.buscarPorID(rs.getInt(6));
+                paciente= new Paciente(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),rs.getDate(5).toLocalDate(),domicilio, rs.getString(7));
+            }
+
+
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return paciente;
     }
 }

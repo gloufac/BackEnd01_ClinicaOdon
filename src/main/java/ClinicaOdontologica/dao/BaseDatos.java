@@ -18,10 +18,11 @@ public class BaseDatos {
             "apellido varchar(100) not null, " +
             "cedula varchar(50) not null, " +
             "fecha_ingreso date not null, " +
-            "domicilio_id int not null" +  // FK foreign key
+            "domicilio_id int not null," +
+            "email VARCHAR(100) NOT NULL" +// FK foreign key
             ")";
-    private static final String CREATE_DROP_TABLE_DOMICILIO = "DROP TABLE IF EXISTS domicilio;" +
-            "CREATE TABLE domicilio(" +
+    private static final String CREATE_DROP_TABLE_DOMICILIO = "DROP TABLE IF EXISTS domicilios;" +
+            "CREATE TABLE domicilios(" +
             "id int AUTO_INCREMENT primary key, " +
             "calle varchar(100) not null, " +
             "numero int not null, " +
@@ -36,13 +37,13 @@ public class BaseDatos {
             "apellido varchar(100) not null " +
             ")";
 
-    private static final String SQL_INSERT_PACIENTES = "INSERT INTO pacientes (nombre, apellido, cedula, fecha_ingreso, domicilio_id)" +
+    private static final String SQL_INSERT_PACIENTES = "INSERT INTO pacientes (nombre, apellido, cedula, fecha_ingreso, domicilio_id, email)" +
             "VALUES " +
-            "('Gloria', 'Lopez', '123454', '2024-01-01', 1)," +
-            "('Samantha', 'Sanchez', '54545', '2024-01-01', 1)" +
+            "('Gloria', 'Lopez', '123454', '2024-01-01', 1, 'XXX@digitalhouse.com')," +
+            "('Samantha', 'Sanchez', '54545', '2024-01-01', 1, 'yyy@digitalhouse.com')" +
             ";";
 
-    private static final String SQL_INSERT_DOMICILIOS = "INSERT INTO domicilio(calle, numero, localidad, provincia)" +
+    private static final String SQL_INSERT_DOMICILIOS = "INSERT INTO domicilios(calle, numero, localidad, provincia)" +
             "VALUES" +
             "('Aragon', 541, 'New Jersey', 'New Jersey')," +
             "('Ohlas', 589, 'Pasadena', 'California')";
