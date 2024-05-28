@@ -64,9 +64,9 @@ public class Paciente {
         return email;
     }
 
+    public Paciente(){}
+
     // todos los campos menos el id, porque el id lo genera la base de datos
-
-
     public Paciente(String nombre, String apellido, String cedula, LocalDate fechaIngreso, Domicilio domicilio, String email) {
         this.nombre = nombre;
         this.apellido = apellido;
