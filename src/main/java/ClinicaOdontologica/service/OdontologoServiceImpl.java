@@ -29,4 +29,9 @@ public class OdontologoServiceImpl implements OdontologoService {
                 ,new Odontologo("ODO-PRUEBA2", "Ana", "Minca")
         );
     }
+
+    @Override
+    public void eliminar(Integer id) {
+        odontologoiDao.eliminar(id);
+    }
 }

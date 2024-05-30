@@ -38,6 +38,8 @@ public class Odontologo {
         this.apellido = apellido;
     }
 
+    public Odontologo(){}
+
     public Odontologo(Integer id, String numeroMatricula, String nombre, String apellido) {
         this.id = id;
         this.numeroMatricula = numeroMatricula;

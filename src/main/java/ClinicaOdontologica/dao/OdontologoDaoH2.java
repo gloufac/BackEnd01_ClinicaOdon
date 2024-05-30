@@ -3,10 +3,7 @@ package ClinicaOdontologica.dao;
 import ClinicaOdontologica.model.Domicilio;
 import ClinicaOdontologica.model.Odontologo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +18,10 @@ public class OdontologoDaoH2 implements iDao<Odontologo> {
             "VALUES(?,?,?)";
     private static final String SQL_SELECT_ONE = "SELECT * FROM odontologos WHERE id = ?";
     private static final String SQL_SELECT_ALL = "SELECT * FROM odontologos";
+    private static final String SQL_DELETE="DELETE FROM odontologos WHERE ID=? ";
+    private final static String SQL_UPDATE = "UPDATE odontologos " +
+            "SET numero_matricula = ?,nombre = ?,apellido = ? " + //??
+            "WHERE id = ?";
 
     @Override
     public Odontologo guardar(Odontologo odontologo) {
@@ -77,12 +78,37 @@ public class OdontologoDaoH2 implements iDao<Odontologo> {
 
     @Override
     public void actualizar(Odontologo odontologo) {
+        logger.info("Iniciar operacion actualizar Odontologo");
+        Connection connection = null;
+        try {
+            connection = BaseDatos.getConnection();
+            PreparedStatement psUpdate = connection.prepareStatement(SQL_UPDATE);
 
+            psUpdate.setString(1, odontologo.getNumeroMatricula());
+            psUpdate.setString(2, odontologo.getNombre());
+            psUpdate.setString(3, odontologo.getApellido());
+            psUpdate.setInt(4, odontologo.getId());
+
+            psUpdate.execute();
+            logger.info("Odontologo actualizado en la BD");
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
     }
 
     @Override
     public void eliminar(Integer id) {
-
+        logger.info("Eliminar por ID: " + id);
+        Connection connection = null;
+        try {
+            connection = BaseDatos.getConnection();
+            PreparedStatement psDelete = connection.prepareStatement(SQL_DELETE);
+            psDelete.setInt(1, id);
+            psDelete.execute();
+            logger.info("Odontologo eliminado");
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+        }
     }
 
     @Override
