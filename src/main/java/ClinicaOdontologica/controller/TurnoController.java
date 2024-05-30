@@ -37,16 +37,16 @@ public class TurnoController {
         return ResponseEntity.ok(turnoService.listarTurnos());
     }
 
-    @PutMapping
-    public ResponseEntity<Turno> actualizarTurno(@RequestBody Turno turno) {
-        PacienteService pacienteService = new PacienteService();
-        OdontologoServiceII odontologoService = new OdontologoServiceII();
-        if (pacienteService.buscarPorID(turno.getPaciente().getId()) != null && odontologoService.buscarPorId(turno.getOdontologo().getId()) != null) {
-            return ResponseEntity.ok(turnoService.actualizar(turno));
-        } else {
-            //bad request or not found
-            return ResponseEntity.badRequest().build();
-        }
-
-    }
+//    @PutMapping
+//    public ResponseEntity<Turno> actualizarTurno(@RequestBody Turno turno) {
+//        PacienteService pacienteService = new PacienteService();
+//        OdontologoServiceII odontologoService = new OdontologoServiceII();
+//        if (pacienteService.buscarPorID(turno.getPaciente().getId()) != null && odontologoService.buscarPorId(turno.getOdontologo().getId()) != null) {
+//            return ResponseEntity.ok(turnoService.actualizar(turno));
+//        } else {
+//            //bad request or not found
+//            return ResponseEntity.badRequest().build();
+//        }
+//
+//    }
 }

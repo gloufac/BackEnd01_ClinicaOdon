@@ -5,6 +5,7 @@ import ClinicaOdontologica.model.Odontologo;
 import ClinicaOdontologica.model.Paciente;
 import ClinicaOdontologica.service.OdontologoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -20,7 +21,6 @@ public class OdontologoController {
         this.odontologoService = odontologoService;
         BaseDatos.crearTablas();
     }
-
 
     @PostMapping
     public Odontologo guardarOdontologo(@RequestBody Odontologo odontologo) {
@@ -59,10 +59,13 @@ public class OdontologoController {
         }
     }
 
-    @GetMapping()
-    public List<Odontologo> buscarTodos() {
-        List<Odontologo> lista = odontologoService.buscarTodos();
-        return lista;
-    }
+//    @GetMapping()
+//    public List<Odontologo> buscarTodos() {
+//        List<Odontologo> lista = odontologoService.buscarTodos();
+//        return lista;
+//    }
+
+    @GetMapping
+    public ResponseEntity<List<Odontologo>> listarTodos() { return ResponseEntity.ok(odontologoService.buscarTodos());}
 
 }
