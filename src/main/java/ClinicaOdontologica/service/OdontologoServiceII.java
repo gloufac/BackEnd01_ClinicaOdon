@@ -16,4 +16,6 @@ public class OdontologoServiceII {
     public Odontologo buscarPorId(Integer id){
         return odontologoiDao.buscarPorID(id);
     }
+    public Odontologo buscarTodos() { return odontologoiDao.buscarTodos();}
+
 }
