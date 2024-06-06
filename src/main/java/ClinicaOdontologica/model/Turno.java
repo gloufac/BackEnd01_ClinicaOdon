@@ -11,16 +11,20 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "odontologo_id", referencedColumnName = "id")
+    @OneToOne()
+    @JoinColumn(name = "odontologo_id", referencedColumnName = "id", nullable = false)
     private Odontologo odontologo;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "paciente_id", referencedColumnName = "id")
+    @OneToOne()
+    @JoinColumn(name = "paciente_id", referencedColumnName = "id", nullable = false)
     private Paciente paciente;
 
-    @Column
+    /*El dato es unico por fecha
+    * */
+    @Column(unique = true, nullable = false)
     private LocalDate fecha;
+
+    //Hora
 
     public Turno() {
     }

@@ -17,15 +17,17 @@ public class TurnoController {
 
     @Autowired
     private TurnoService turnoService;
-    /*@Autowired
-    private OdontologoService odontologoService;*/
+    @Autowired
+    private OdontologoService odontologoService;
     @Autowired
     private PacienteService pacienteService;
 
     @PostMapping
     public ResponseEntity<Turno> crearTurno(@RequestBody Turno turno) {
-        //odontologoService.buscarPorId(turno.getOdontologo().getId()) != null
-        if (pacienteService.buscarPacientePorId(turno.getPaciente().getId()).isPresent()) {
+
+        if (pacienteService.buscarPacientePorId(turno.getPaciente().getId()).isPresent()
+                && odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId()).isPresent()
+            ) {
             return ResponseEntity.ok(turnoService.guardarTurno(turno));
         } else {
             // Bad Request: se requiere el paciente y el odontologo
@@ -41,9 +43,10 @@ public class TurnoController {
     @PutMapping
     public ResponseEntity<String> actualizarTurno(@RequestBody Turno turno) {
         Optional<Turno> turnoBuscado = turnoService.buscarTurnoPorId(turno.getId());
-        //&& odontologoService.buscarPorId(turno.getOdontologo().getId()) != null
         if (turnoBuscado.isPresent()
-                && pacienteService.buscarPacientePorId(turno.getPaciente().getId()).isPresent()) {
+                && pacienteService.buscarPacientePorId(turno.getPaciente().getId()).isPresent()
+                && odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId()).isPresent()
+        ) {
             turnoService.actualizarTurno(turno);
             return ResponseEntity.ok("El turno ha sido actualizado");
         } else {
