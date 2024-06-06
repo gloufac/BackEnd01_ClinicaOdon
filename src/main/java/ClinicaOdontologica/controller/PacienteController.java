@@ -2,19 +2,19 @@ package ClinicaOdontologica.controller;
 
 import ClinicaOdontologica.model.Paciente;
 import ClinicaOdontologica.service.PacienteService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/paciente")
 public class PacienteController {
-    private PacienteService pacienteService;
 
-    public PacienteController() {
-        pacienteService = new PacienteService();
-    }
+    @Autowired
+    private PacienteService pacienteService;
 
     /**
      * Crear un nuevo paciente
@@ -38,14 +38,14 @@ public class PacienteController {
      */
     @PutMapping
     public ResponseEntity<String> actualizarPaciente(@RequestBody Paciente paciente) {
-        Paciente pacienteBuscado = pacienteService.buscarPorID(paciente.getId()); //necesitamos primeramente validar si existe o  no
-        if (pacienteBuscado != null && pacienteBuscado.getId() > 0) {
-            pacienteService.actualizar(paciente);
+
+        Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(paciente.getId()); //necesitamos primeramente validar si existe o  no
+        if (pacienteBuscado.isPresent()) {
+            pacienteService.actualizarPaciente(paciente);
             return ResponseEntity.ok("El paciente se ha actualizado");
         } else {
-            return ResponseEntity.badRequest().body("paciente no encontrado");
+            return ResponseEntity.badRequest().body("No se encontro paciente");
         }
-
     }
 
     /**
@@ -54,12 +54,22 @@ public class PacienteController {
      * @return paciente
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Paciente> buscarPacientePorId(@PathVariable Integer id) {
-        if (id > 0) {
-            Paciente pacienteBuscado = pacienteService.buscarPorID(id);
-            return ResponseEntity.ok(pacienteBuscado);
+    public ResponseEntity<Paciente> buscarPacientePorId(@PathVariable Long id) {
+        Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(id);
+        if (pacienteBuscado.isPresent()) {
+            return ResponseEntity.ok(pacienteBuscado.get());
         } else {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<Paciente> buscarPacientePorEmail(@PathVariable String email) {
+        Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorEmail(email);
+        if (pacienteBuscado.isPresent()) {
+            return ResponseEntity.ok(pacienteBuscado.get());
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -68,12 +78,12 @@ public class PacienteController {
      * @param id
      * @return String
      */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarPaciente(@PathVariable Integer id) {
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<String> eliminarPaciente(@PathVariable Long id) {
         if (id > 0) {
-            Paciente pacienteBuscado = pacienteService.buscarPorID(id);
-            if(pacienteBuscado != null && pacienteBuscado.getId() > 0){
-                pacienteService.eliminar(id);
+            Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(id);
+            if(pacienteBuscado.isPresent()){
+                pacienteService.eliminarPaciente(id);
                 return ResponseEntity.ok("El paciente se ha eliminado");
             }
         }
