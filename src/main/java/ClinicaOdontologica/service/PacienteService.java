@@ -1,24 +1,39 @@
 package ClinicaOdontologica.service;
 
-
-import ClinicaOdontologica.dao.PacienteDaoH2;
-import ClinicaOdontologica.dao.iDao;
 import ClinicaOdontologica.model.Paciente;
+import ClinicaOdontologica.repository.PacienteRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class PacienteService {
-    // relacion de asociacion directa con el DAO
-    private iDao<Paciente> pacienteiDao;
-    public PacienteService() {
-        pacienteiDao= new PacienteDaoH2();
+    @Autowired
+    private PacienteRepository pacienteRepository;
+
+    public Paciente guardarPaciente(Paciente paciente){
+        return pacienteRepository.save(paciente);
     }
 
-    public Paciente guardarPaciente(Paciente paciente){ return pacienteiDao.guardar(paciente); }
-    public Paciente buscarPorID(Integer id){ return pacienteiDao.buscarPorID(id);}
-    public void actualizar(Paciente paciente){ pacienteiDao.actualizar(paciente); }
-    public void eliminar(Integer id){ pacienteiDao.eliminar(id); }
+    public Paciente actualizarPaciente(Paciente paciente){
+        return pacienteRepository.save(paciente);
+    }
+
+    public Optional<Paciente> buscarPacientePorId(Long id){
+        return pacienteRepository.findById(id);
+    }
+
+    public Optional<Paciente> buscarPacientePorEmail(String email){
+        return pacienteRepository.findByEmail(email);
+    }
+
+    public void eliminarPaciente(Long id){
+        pacienteRepository.deleteById(id);
+    }
+
     public List<Paciente> buscarTodos(){
-        return pacienteiDao.buscarTodos();
+        return pacienteRepository.findAll();
     }
 }

@@ -1,6 +1,5 @@
 package ClinicaOdontologica;
 
-import ClinicaOdontologica.dao.BaseDatos;
 import ClinicaOdontologica.model.Domicilio;
 import ClinicaOdontologica.model.Paciente;
 import ClinicaOdontologica.service.PacienteService;
@@ -10,7 +9,6 @@ import java.time.LocalDate;
 public class Cliente {
 
     public static void main(String[] args) {
-        BaseDatos.crearTablas();
 
         Paciente paciente = new Paciente("Argemiro", "Diaz", "12345"
                 , LocalDate.of(2024, 5, 20)
