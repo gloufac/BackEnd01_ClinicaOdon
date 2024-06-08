@@ -63,7 +63,7 @@ public class PacienteController {
         }
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public ResponseEntity<Paciente> buscarPacientePorEmail(@PathVariable String email) {
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorEmail(email);
         if (pacienteBuscado.isPresent()) {
@@ -78,7 +78,7 @@ public class PacienteController {
      * @param id
      * @return String
      */
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarPaciente(@PathVariable Long id) {
         if (id > 0) {
             Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(id);
