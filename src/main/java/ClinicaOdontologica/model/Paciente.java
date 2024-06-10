@@ -83,7 +83,7 @@ public class Paciente {
 
 
     // todos los campos menos el id, porque el id lo genera la base de datos
-    public Paciente(String nombre, String apellido, String cedula, LocalDate fechaIngreso, Domicilio domicilio, String email) {
+    public Paciente(String nombre, String apellido, String cedula, LocalDate fechaIngreso, String email, Domicilio domicilio) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.cedula = cedula;
@@ -92,7 +92,7 @@ public class Paciente {
         this.email = email;
     }
 
-    public Paciente(Long id, String nombre, String apellido, String cedula, LocalDate fechaIngreso, Domicilio domicilio, String email) {
+    public Paciente(Long id, String nombre, String apellido, String cedula, LocalDate fechaIngreso, String email, Domicilio domicilio) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
