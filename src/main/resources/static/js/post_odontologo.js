@@ -1,41 +1,31 @@
 window.addEventListener('load', function () {
     //Al cargar la página buscamos y obtenemos el formulario donde estarán
-    //los datos que el usuario cargará de la nueva película
+    //los datos que el usuario cargará del nuevo odontologo
 
-    const formulario = document.querySelector('#add_new_paciente');
-
+    const formulario = document.querySelector('#add_new_odontologo');
+    console.log(formulario);
     if (formulario !== null) {
         //Ante un submit del formulario
         //se ejecutará la siguiente función
         formulario.addEventListener('submit', function (event) {
-            //Si el ID del paciente es distinto de vacío
-            console.log('paciente_id', document.querySelector('#paciente_id').value)
-            if(document.querySelector('#paciente_id').value !== ""){
-                update_paciente();
+            //Si el ID del odontologo es distinto de vacío
+            console.log('odontologo_id',document.querySelector('#odontologo_id'))
+            if(document.querySelector('#odontologo_id').value !== ""){
+                update_odontologo(); //revisar
                 event.preventDefault();
                 return;
             }
 
-            //creamos un JSON que tendrá los datos del nuevo paciente
-            const formDomicilio = {
-                calle: document.querySelector('#calle').value,
-                numero: document.querySelector('#numero').value,
-                localidad: document.querySelector('#localidad').value,
-                provincia: document.querySelector('#provincia').value,
-            };
             const formData = {
-                cedula: document.querySelector('#cedula').value,
+                numeroMatricula: document.querySelector('#numeroMatricula').value
                 nombre: document.querySelector('#nombre').value,
                 apellido: document.querySelector('#apellido').value,
-                fechaIngreso: document.querySelector('#fechaingreso').value,
-                email: document.querySelector('#email').value,
-                domicilio: formDomicilio
             };
 
-            //invocamos la API peliculas utilizando la función fetch de JavaScript
+            //invocamos la API utilizando la función fetch de JavaScript
             //con el método POST que guardará
-            //la película que enviaremos en formato JSON
-            const url = '/paciente';
+            //el odontologo que enviaremos en formato JSON
+            const url = '/odontologos';
             const settings = {
                 method: 'POST',
                 headers: {
@@ -47,15 +37,15 @@ window.addEventListener('load', function () {
             fetch(url, settings)
                 .then(response => response.json())
                 .then(data => {
-                    //Si no hay ningún error, se muestra un mensaje diciendo que el paciente fue agregado
-                    let successAlert = '<div class="alert alert-success alert-dismissible"><strong>Resultado:</strong> Paciente agregado </div>'
+                    //Si no hay ningún error, se muestra un mensaje diciendo que el odontologo fue agregado
+                    let successAlert = '<div class="alert alert-success alert-dismissible"><strong>Resultado:</strong> Odontologo agregado </div>'
                     document.querySelector('#response').innerHTML = successAlert;
                     document.querySelector('#response').style.display = "block";
                     resetUploadForm();
                 })
 
                 .catch(error => {
-                    //Si hay algún error, se muestra un mensaje diciendo que el paciente no se pudo guardar y se intente nuevamente
+                    //Si hay algún error, se muestra un mensaje diciendo que el odontologo no se pudo guardar y se intente nuevamente
                     let errorAlert = '<div class="alert alert-danger alert-dismissible">' +
                         '<button type="button" class="close"' +
                         'data-dismiss="alert">&times;</button>' +
@@ -67,11 +57,8 @@ window.addEventListener('load', function () {
                     //se dejan todos los campos vacíos por si se quiere ingresar otro paciente
                     resetUploadForm();
                 })
-
                 event.preventDefault();
-                
         });
-
     }
 });
 
@@ -88,7 +75,7 @@ function resetUploadForm() {
 }
 
 
-$(document).ready(function(){    
+$(document).ready(function(){
     $("#staticBackdrop").on('hide.bs.modal', function(){
         resetUploadForm();
         document.querySelector('#staticBackdropLabel').innerHTML = "Agregar Paciente";
