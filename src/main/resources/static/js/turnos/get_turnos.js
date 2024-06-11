@@ -1,6 +1,6 @@
 window.addEventListener('load', function () {
   (function () {
-    const url = '/turnos';
+    const url = '/turno';
     const settings = {
       method: 'GET'
     }
@@ -29,11 +29,9 @@ window.addEventListener('load', function () {
 
 
           turnoRow.innerHTML = '<td>' + updateButton + '</td>' +
-            '<td class=\"td_cedula\">' + turno.cedula + '</td>' +
-            '<td class=\"td_nombrecompleto\">' + paciente.nombre + ' ' + paciente.apellido + '</td>' +
-            '<td class=\"td_fechaingreso\">' + paciente.fechaIngreso + '</td>' +
-            '<td class=\"td_email\">' + paciente.email + '</td>' +
-            '<td class=\"td_domicilio\">' + paciente.domicilio.calle +' '+ paciente.domicilio.numero+' '+ paciente.domicilio.localidad+' '+ paciente.domicilio.provincia + '</td>' +
+            '<td class=\"td_fecha\">' + turno.fecha + '</td>' +
+            '<td class=\"td_paciente\">' + turno.paciente.nombre + ' ' + turno.paciente.apellido + '</td>' +
+            '<td class=\"td_odontologo\">' + turno.odontologo.nombre + ' ' + turno.odontologo.apellido + '</td>' +
             '<td>' + deleteButton + '</td>';
         };
       })
@@ -43,7 +41,7 @@ window.addEventListener('load', function () {
 
     (function () {
       let pathname = window.location.pathname;
-      if (pathname == "get_pacientes.html") {
+      if (pathname == "../../turnos/get_turnos.html") {
         document.querySelector(".nav .nav-item a:last").addClass("active");
       }
     })

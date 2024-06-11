@@ -37,18 +37,10 @@
                         Pacientes
                     </a>
                 </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="../odontologos/get_odontologos.html" role="button"
-                       data-bs-toggle="dropdown" aria-expanded="false">
+                <li class="nav-item">
+                    <a class="nav-link" href="../odontologos/get_odontologos.html" role="button" aria-expanded="false">
                         Odontologos
                     </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="../odontologos/get_odontologos.html">Guardar</a></li>
-                        <li><a class="dropdown-item" href="../odontologos/get_odontologos.html">Listar</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                    </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="get_turnos.html" role="button" data-bs-toggle="dropdown"
@@ -120,21 +112,18 @@
                             </div>
                             <div class="form-group">
                                 <label>Fecha Turno:</label>
-                                <input type="date" class="form-control" placeholder="fecha"
-                                       id="fecha">
+                                <input type="date" class="form-control" placeholder="fecha" id="fecha">
                             </div>
                             <div class="form-group">
                                 <label>Paciente:</label>
-                                <select name="cars" id="cars">
+                                <select name="paciente" id="lstPacientes">
                                     <option value="volvo">Volvo</option>
-                                    <option value="saab">Saab</option>
-                                    <option value="mercedes">Mercedes</option>
-                                    <option value="audi">Audi</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Nombre:</label>
-                                <input type="text" class="form-control" placeholder="nombre" id="nombre">
+                                <label>Odontologos:</label>
+                                <select name="odontologo" id="lstOdontologos">
+                                </select>
                             </div>
                             <div id="response" style="display:none; margin:10px">
 

@@ -1,6 +1,7 @@
 package ClinicaOdontologica.controller;
 
 
+import ClinicaOdontologica.model.Odontologo;
 import ClinicaOdontologica.model.Paciente;
 import ClinicaOdontologica.model.Turno;
 import ClinicaOdontologica.service.*;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/turnos")
+@RequestMapping("/turno") // dejar el nombre en singular
 public class TurnoController {
 
     @Autowired
@@ -24,11 +25,13 @@ public class TurnoController {
 
     @PostMapping
     public ResponseEntity<Turno> crearTurno(@RequestBody Turno turno) {
-
-        if (pacienteService.buscarPacientePorId(turno.getPaciente().getId()).isPresent()
-                && odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId()).isPresent()
-            ) {
-            return ResponseEntity.ok(turnoService.guardarTurno(turno));
+        Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(turno.getPaciente().getId());
+        Optional<Odontologo> odontologoBuscado = odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId());
+        if (pacienteBuscado.isPresent() && odontologoBuscado.isPresent()) {
+            var algo = turnoService.guardarTurno(turno);
+            //algo.setPaciente(pacienteBuscado.get());
+            //algo.setOdontologo(odontologoBuscado.get());
+            return ResponseEntity.ok(algo);
         } else {
             // Bad Request: se requiere el paciente y el odontologo
             return ResponseEntity.badRequest().build();
@@ -42,10 +45,10 @@ public class TurnoController {
 
     @PutMapping
     public ResponseEntity<String> actualizarTurno(@RequestBody Turno turno) {
+        Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(turno.getPaciente().getId());
+        Optional<Odontologo> odontologoBuscado = odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId());
         Optional<Turno> turnoBuscado = turnoService.buscarTurnoPorId(turno.getId());
-        if (turnoBuscado.isPresent()
-                && pacienteService.buscarPacientePorId(turno.getPaciente().getId()).isPresent()
-                && odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId()).isPresent()
+        if (turnoBuscado.isPresent() && pacienteBuscado.isPresent() && odontologoBuscado.isPresent()
         ) {
             turnoService.actualizarTurno(turno);
             return ResponseEntity.ok("El turno ha sido actualizado");
@@ -55,8 +58,8 @@ public class TurnoController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<String> eliminarTurno(@RequestBody Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> eliminarTurno(@PathVariable Long id) {
         Optional<Turno> turnoBuscado = turnoService.buscarTurnoPorId(id);
         if(turnoBuscado.isPresent()){
             turnoService.eliminarTurno(id);
@@ -64,6 +67,12 @@ public class TurnoController {
         } else {
             return ResponseEntity.badRequest().body("Id inválido o el turno no se encontró");
         }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Turno> buscarTurnoPorId(@PathVariable Long id) {
+        Optional<Turno> turnoBuscado = turnoService.buscarTurnoPorId(id);
+        return turnoBuscado.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/odontologo/{id}")
