@@ -17,7 +17,7 @@ window.addEventListener('load', function () {
             }
 
             const formData = {
-                numeroMatricula: document.querySelector('#numeroMatricula').value
+                numeroMatricula: document.querySelector('#numeroMatricula').value,
                 nombre: document.querySelector('#nombre').value,
                 apellido: document.querySelector('#apellido').value,
             };
@@ -25,7 +25,7 @@ window.addEventListener('load', function () {
             //invocamos la API utilizando la función fetch de JavaScript
             //con el método POST que guardará
             //el odontologo que enviaremos en formato JSON
-            const url = '/odontologos';
+            const url = '/odontologo';
             const settings = {
                 method: 'POST',
                 headers: {
@@ -63,21 +63,15 @@ window.addEventListener('load', function () {
 });
 
 function resetUploadForm() {
-    document.querySelector('#cedula').value = "";
+    document.querySelector('#numeroMatricula').value = "";
     document.querySelector('#nombre').value = "";
     document.querySelector('#apellido').value = "";
-    document.querySelector('#fechaingreso').value = "";
-    document.querySelector('#email').value = "";
-    document.querySelector('#calle').value = "";
-    document.querySelector('#numero').value = "";
-    document.querySelector('#localidad').value = "";
-    document.querySelector('#provincia').value = "";
 }
 
 
 $(document).ready(function(){
     $("#staticBackdrop").on('hide.bs.modal', function(){
         resetUploadForm();
-        document.querySelector('#staticBackdropLabel').innerHTML = "Agregar Paciente";
+        document.querySelector('#staticBackdropLabel').innerHTML = "Agregar Odontologo";
     });
 });
