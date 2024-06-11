@@ -11,8 +11,7 @@ window.addEventListener('load', function () {
       fetch(url,settings)
       .then(response => response.json())
       .then(data => {
-      //recorremos la colección de peliculas del JSON
-        console.log(data);
+      //recorremos la colección de odontologos del JSON
          for(odontologo of data){
             //por cada pelicula armaremos una fila de la tabla
             //cada fila tendrá un id que luego nos permitirá borrar la fila si eliminamos la pelicula
@@ -30,9 +29,9 @@ window.addEventListener('load', function () {
                                       '&times' +
                                       '</button>';
 
-            //por cada pelicula creamos un boton que muestra el id y que al hacerle clic invocará
-            //a la función de java script findBy que se encargará de buscar la pelicula que queremos
-            //modificar y mostrar los datos de la misma en un formulario.
+            //por cada odontologo creamos un boton que muestra el id y que al hacerle clic invocará
+            //a la función de java script findBy que se encargará de buscar el odontologo que queremos
+            //modificar y mostrar los datos del mismo en un formulario.
             let updateButton = '<button' +
                                       ' id=' + '\"' + 'btn_id_' + odontologo.id + '\"' +
                                       ' type="button" onclick="findBy('+odontologo.id+')" class="btn btn-info btn_id">' +
@@ -56,7 +55,7 @@ window.addEventListener('load', function () {
 
     (function(){
       let pathname = window.location.pathname;
-      if (pathname == "/peliculaList.html") {
+      if (pathname == "/get_odontologos.html") {
           document.querySelector(".nav .nav-item a:last").addClass("active");
       }
     })

@@ -57,7 +57,7 @@ public class OdontologoController {
 
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarOdontologo(@PathVariable Long id) {
         if (id > 0) {
             Optional<Odontologo> odontologoBuscado = odontologoService.buscarOdontologoPorId(id);
