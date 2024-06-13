@@ -91,6 +91,7 @@ function resetUploadForm() {
 $(document).ready(function(){    
     $("#staticBackdrop").on('hide.bs.modal', function(){
         resetUploadForm();
+        listarPacientes();
         document.querySelector('#staticBackdropLabel').innerHTML = "Agregar Paciente";
     });
 });

@@ -1,5 +1,6 @@
 package ClinicaOdontologica.controller;
 
+import ClinicaOdontologica.exception.ResourceNotFoundException;
 import ClinicaOdontologica.model.Paciente;
 import ClinicaOdontologica.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +80,7 @@ public class PacienteController {
      * @return String
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarPaciente(@PathVariable Long id) {
+    public ResponseEntity<String> eliminarPaciente(@PathVariable Long id) throws ResourceNotFoundException {
         if (id > 0) {
             Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(id);
             if(pacienteBuscado.isPresent()){
@@ -87,7 +88,8 @@ public class PacienteController {
                 return ResponseEntity.ok("El paciente se ha eliminado");
             }
         }
-        return ResponseEntity.badRequest().body("Id no válido o Paciente no encontrado");
+        throw new ResourceNotFoundException("No existe ese id: " + id);
+        //return ResponseEntity.badRequest().body("Id no válido o Paciente no encontrado");
     }
 
     /**

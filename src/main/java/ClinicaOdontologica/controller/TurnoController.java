@@ -1,6 +1,7 @@
 package ClinicaOdontologica.controller;
 
 
+import ClinicaOdontologica.exception.BadRequestException;
 import ClinicaOdontologica.model.Odontologo;
 import ClinicaOdontologica.model.Paciente;
 import ClinicaOdontologica.model.Turno;
@@ -23,18 +24,20 @@ public class TurnoController {
     @Autowired
     private PacienteService pacienteService;
 
+    // TODO preguntar al profe cuando hay errores en la validacion de datos como se controla
     @PostMapping
-    public ResponseEntity<Turno> crearTurno(@RequestBody Turno turno) {
+    public ResponseEntity<Turno> crearTurno(@RequestBody Turno turno) throws BadRequestException{
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(turno.getPaciente().getId());
         Optional<Odontologo> odontologoBuscado = odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId());
         if (pacienteBuscado.isPresent() && odontologoBuscado.isPresent()) {
             var algo = turnoService.guardarTurno(turno);
-            //algo.setPaciente(pacienteBuscado.get());
-            //algo.setOdontologo(odontologoBuscado.get());
+            algo.setPaciente(pacienteBuscado.get());
+            algo.setOdontologo(odontologoBuscado.get());
             return ResponseEntity.ok(algo);
         } else {
             // Bad Request: se requiere el paciente y el odontologo
-            return ResponseEntity.badRequest().build();
+            //return ResponseEntity.badRequest().build();
+            throw new BadRequestException("No existe el odontologo o paciente relacionado");
         }
     }
 
