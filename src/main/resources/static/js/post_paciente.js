@@ -1,6 +1,6 @@
 window.addEventListener('load', function () {
     //Al cargar la página buscamos y obtenemos el formulario donde estarán
-    //los datos que el usuario cargará de la nueva película
+    //los datos que el usuario cargará del nuevo paciente
 
     const formulario = document.querySelector('#add_new_paciente');
 
@@ -9,7 +9,6 @@ window.addEventListener('load', function () {
         //se ejecutará la siguiente función
         formulario.addEventListener('submit', function (event) {
             //Si el ID del paciente es distinto de vacío
-            console.log('paciente_id', document.querySelector('#paciente_id').value)
             if(document.querySelector('#paciente_id').value !== ""){
                 update_paciente();
                 event.preventDefault();
@@ -32,9 +31,9 @@ window.addEventListener('load', function () {
                 domicilio: formDomicilio
             };
 
-            //invocamos la API peliculas utilizando la función fetch de JavaScript
+            //invocamos la API utilizando la función fetch de JavaScript
             //con el método POST que guardará
-            //la película que enviaremos en formato JSON
+            //el paciente que enviaremos en formato JSON
             const url = '/paciente';
             const settings = {
                 method: 'POST',
