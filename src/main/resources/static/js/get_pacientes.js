@@ -21,7 +21,7 @@ function listarPacientes() {
     .then(response => response.json())
     .then(data => {
       //recorremos la colección de pacientes del JSON
-      var table = document.getElementById("pacienteTable");
+      var table = document.getElementById("pacienteTableBody");
       table.innerHTML = '';
       for (paciente of data) {
         var pacienteRow = table.insertRow();

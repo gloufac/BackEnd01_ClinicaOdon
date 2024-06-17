@@ -3,15 +3,14 @@ window.addEventListener('load', function () {
     //los datos que el usuario cargará del nuevo odontologo
 
     const formulario = document.querySelector('#add_new_odontologo');
-    console.log(formulario);
+
     if (formulario !== null) {
         //Ante un submit del formulario
         //se ejecutará la siguiente función
         formulario.addEventListener('submit', function (event) {
             //Si el ID del odontologo es distinto de vacío
-            console.log('odontologo_id',document.querySelector('#odontologo_id'))
             if(document.querySelector('#odontologo_id').value !== ""){
-                update_odontologo(); //revisar
+                update_odontologo();
                 event.preventDefault();
                 return;
             }
@@ -38,6 +37,7 @@ window.addEventListener('load', function () {
                 .then(response => response.json())
                 .then(data => {
                     //Si no hay ningún error, se muestra un mensaje diciendo que el odontologo fue agregado
+
                     let successAlert = '<div class="alert alert-success alert-dismissible"><strong>Resultado:</strong> Odontologo agregado </div>'
                     document.querySelector('#response').innerHTML = successAlert;
                     document.querySelector('#response').style.display = "block";
@@ -72,6 +72,7 @@ function resetUploadForm() {
 $(document).ready(function(){
     $("#staticBackdrop").on('hide.bs.modal', function(){
         resetUploadForm();
+        listarOdontologos();
         document.querySelector('#staticBackdropLabel').innerHTML = "Agregar Odontologo";
     });
 });
