@@ -4,7 +4,6 @@ package ClinicaOdontologica.model;
  * Tabla roles
  * TODO: Gloria
  */
-public class Rol {
-    private Integer id;
-    private String Nombre;
+public enum UsuarioRole {
+    ROLE_USER, ROLE_ADMIN
 }
