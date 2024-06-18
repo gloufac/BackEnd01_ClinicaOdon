@@ -4,10 +4,12 @@ import ClinicaOdontologica.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -41,23 +43,31 @@ public class ConfigWebSecurity {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        /*httpSecure
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecure) throws Exception{
+        httpSecure
+                .csrf(
+                        AbstractHttpConfigurer::disable // desactivar referencias cruzadas
+                )// PROD: investigar
                 .authorizeHttpRequests((authz) -> authz
-                .requestMatchers("/post_pacientes.html").hasRole("USER")
-                        .requestMatchers("post_odontologos.html", "/get_odontologos.html").hasRole("USER")
+                        .requestMatchers(antMatcher(HttpMethod.POST))
+                        .hasRole("ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.GET))
+                        .hasRole("ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.PUT))
+                        .hasRole("ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.DELETE))
+                        .hasRole("ADMIN")
+                        .requestMatchers(antMatcher(HttpMethod.GET))
+                        .hasRole("USER")
+                        .requestMatchers("./turnos/**")
+                        .hasRole("USER")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/paciente"))
+                        .hasRole("USER")
+                        .requestMatchers(antMatcher(HttpMethod.GET, "/odontologo"))
+                        .hasRole("USER")
                 .anyRequest().authenticated())
                 .formLogin(Customizer.withDefaults())
                 .logout(Customizer.withDefaults());
-        return httpSecure.build();*/
-        http
-                .authorizeHttpRequests((authz) -> authz
-                        .requestMatchers("/post_pacientes.html").hasRole("USER")
-
-                        .anyRequest().authenticated()
-                )
-                .formLogin(withDefaults())
-                .logout(withDefaults());
-        return http.build();
+        return httpSecure.build();
     }
 }
