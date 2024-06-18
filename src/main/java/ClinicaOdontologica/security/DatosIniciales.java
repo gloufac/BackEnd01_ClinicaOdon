@@ -20,9 +20,10 @@ public class DatosIniciales implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         String passSinCifrar = "admin";
         String passCifrado = passwordEncoder.encode(passSinCifrar);
-        //public Usuario(String nombre, String usuario, String contrasenia, String email, UsuarioRole usuarioRole) {
-        Usuario usuario = new Usuario("glopez", "glopez", passCifrado, "admin@admin.com", UsuarioRole.ROLE_USER);
+        Usuario usuario = new Usuario("glopez", "glopez", passCifrado, "admin@admin.com", UsuarioRole.ROLE_ADMIN);
+        Usuario usuario2 = new Usuario("jessica", "jessica", passCifrado, "user@user.com", UsuarioRole.ROLE_USER);
         System.out.println("pass cifrado: " + passCifrado);
         usuarioRepository.save(usuario);
+        usuarioRepository.save(usuario2);
     }
 }

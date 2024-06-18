@@ -2,6 +2,7 @@ package ClinicaOdontologica.controller;
 
 
 import ClinicaOdontologica.exception.BadRequestException;
+import ClinicaOdontologica.exception.ResourceNotFoundException;
 import ClinicaOdontologica.model.Odontologo;
 import ClinicaOdontologica.model.Paciente;
 import ClinicaOdontologica.model.Turno;
@@ -47,7 +48,7 @@ public class TurnoController {
     }
 
     @PutMapping
-    public ResponseEntity<String> actualizarTurno(@RequestBody Turno turno) {
+    public ResponseEntity<String> actualizarTurno(@RequestBody Turno turno) throws ResourceNotFoundException{
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(turno.getPaciente().getId());
         Optional<Odontologo> odontologoBuscado = odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId());
         Optional<Turno> turnoBuscado = turnoService.buscarTurnoPorId(turno.getId());
@@ -56,19 +57,18 @@ public class TurnoController {
             turnoService.actualizarTurno(turno);
             return ResponseEntity.ok("El turno ha sido actualizado");
         } else {
-            //bad request or not found
-            return ResponseEntity.badRequest().build();
+            throw new ResourceNotFoundException("Id inválido o odontologo y paciente no encontrados");
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarTurno(@PathVariable Long id) {
+    public ResponseEntity<String> eliminarTurno(@PathVariable Long id) throws ResourceNotFoundException {
         Optional<Turno> turnoBuscado = turnoService.buscarTurnoPorId(id);
         if(turnoBuscado.isPresent()){
             turnoService.eliminarTurno(id);
             return ResponseEntity.ok("Ok, el turno ha sido eliminado");
         } else {
-            return ResponseEntity.badRequest().body("Id inválido o el turno no se encontró");
+            throw new ResourceNotFoundException("Id inválido o el turno no existe");
         }
     }
 
