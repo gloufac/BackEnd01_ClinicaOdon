@@ -33,17 +33,22 @@ function listarTurnos() {
 
         let updateButton = '<button' +
           ' id=' + '\"' + 'btn_id_' + turno.id + '\"' +
-          ' type="button" onclick="findBy(' + turno.id + ')"' +
-          ' class="btn btn-info btn_id">' +
+          ' type="button" onclick="loadTurno(' + turno.id + ')"' +
+          ' class="btn btn-dark btn_id">' +
           turno.id +
           '</button>';
 
 
         turnoRow.innerHTML = '<td>' + updateButton + '</td>' +
+          '<td class=\"td_turno\">' + turno.nombreturno + '</td>' +
           '<td class=\"td_fecha\">' + turno.fecha + '</td>' +
           '<td class=\"td_paciente\">' + turno.paciente.nombre + ' ' + turno.paciente.apellido + '</td>' +
           '<td class=\"td_odontologo\">' + turno.odontologo.nombre + ' ' + turno.odontologo.apellido + '</td>' +
           '<td>' + deleteButton + '</td>';
       };
     });
+}
+
+function loadTurno(id) {
+  window.location = '/turnos/update_turnos.html?id=' + id;
 }

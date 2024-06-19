@@ -45,7 +45,7 @@ function listarPacientes() {
         let updateButton = '<button' +
           ' id=' + '\"' + 'btn_id_' + paciente.id + '\"' +
           ' type="button" onclick="findBy(' + paciente.id + ')"' +
-          ' class="btn btn-info btn_id">' +
+          ' class="btn btn-dark btn_id">' +
           paciente.id +
           '</button>';
 
