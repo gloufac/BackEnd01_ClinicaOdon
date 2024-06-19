@@ -2,6 +2,7 @@ package ClinicaOdontologica.service;
 
 import ClinicaOdontologica.model.Turno;
 import ClinicaOdontologica.repository.TurnoRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,9 @@ public class TurnoService {
     private TurnoRepository turnoRepository;
 
     public Turno guardarTurno(Turno turno){
-        return turnoRepository.save(turno);
+        Turno turno1 = turnoRepository.save(turno);
+        turno1.setNombreturno("CLO-" + StringUtils.leftPad(turno.getId().toString(), 3, "0"));
+        return turnoRepository.save(turno1);
     }
 
     public Turno actualizarTurno(Turno turno){

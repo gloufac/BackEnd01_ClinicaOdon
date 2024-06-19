@@ -67,9 +67,3 @@ window.addEventListener('load', function () {
 
     }
 });
-
-function resetUploadForm() {
-    document.querySelector('#fecha').value = "";
-    document.querySelector('#lstPacientes').value = "";
-    document.querySelector('#lstOdontologos').value = "";
-}

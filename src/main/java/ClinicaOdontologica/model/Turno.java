@@ -11,6 +11,9 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String nombreturno;
+
     @ManyToOne()
     @JoinColumn(name = "odontologo_id", referencedColumnName = "id", nullable = false)
     private Odontologo odontologo;
@@ -67,6 +70,14 @@ public class Turno {
 
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
+    }
+
+    public String getNombreturno() {
+        return nombreturno;
+    }
+
+    public void setNombreturno(String nombreturno) {
+        this.nombreturno = nombreturno;
     }
 
 }

@@ -1,4 +1,4 @@
-function listarPacientes() {
+function listarPacientes(id = 0) {
     let resultado = false;
     const url = '/paciente';
     const settings = {
@@ -14,6 +14,9 @@ function listarPacientes() {
                 resultado = true;
                 let option = document.createElement('option');
                 option.value = paciente.id;
+                if(id > 0 && id == paciente.id){
+                    option.selected = true;
+                }
                 option.text = paciente.nombre + ' ' + paciente.apellido;
                 document.querySelector('#lstPacientes').appendChild(option);
             }
@@ -22,7 +25,7 @@ function listarPacientes() {
     return resultado;
 }
 
-function listarOdontologos() {
+function listarOdontologos(id = 0) {
     let resultado = false;
     const url = '/odontologo';
     const settings = {
@@ -38,9 +41,22 @@ function listarOdontologos() {
                 resultado = true;
                 let option = document.createElement('option');
                 option.value = odontologo.id;
+                if(id > 0 && id == odontologo.id){
+                    option.selected = true;
+                }
                 option.text = odontologo.nombre + ' ' + odontologo.apellido;
                 document.querySelector('#lstOdontologos').appendChild(option);
             }
         });
     return resultado;
+}
+
+function hometurnos() {
+    window.location = '/turnos/get_turnos.html';
+}
+
+function resetUploadForm() {
+    document.querySelector('#fecha').value = "";
+    document.querySelector('#lstPacientes').value = "";
+    document.querySelector('#lstOdontologos').value = "";
 }

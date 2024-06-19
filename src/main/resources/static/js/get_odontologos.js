@@ -43,7 +43,7 @@ function listarOdontologos(){
         let updateButton = '<button' +
           ' id=btn_id_' + odontologo.id + '"' +
           ' type="button" onclick="findBy(' + odontologo.id + ')"' +
-          ' class="btn btn-info btn_id">' +
+          ' class="btn btn-dark btn_id">' +
           odontologo.id +
           '</button>';
 
@@ -52,9 +52,9 @@ function listarOdontologos(){
         //luego los datos del odontologo
         //como ultima columna el boton eliminar
         odontologoRow.innerHTML = '<td>' + updateButton + '</td>' +
-            '<td class=\"td_numeroMatricula\">' + odontologo.numeroMatricula.toUpperCase() + '</td>' +
-            '<td class=\"td_nombre\">' + odontologo.nombre.toUpperCase() + '</td>' +
-            '<td class=\"td_apellido\">' + odontologo.apellido.toUpperCase() + '</td>' +
+            '<td class=\"td_numeroMatricula\">' + odontologo.numeroMatricula + '</td>' +
+            '<td class=\"td_nombre\">' + odontologo.nombre + '</td>' +
+            '<td class=\"td_apellido\">' + odontologo.apellido + '</td>' +
             '<td>' + deleteButton + '</td>';
     };
 
