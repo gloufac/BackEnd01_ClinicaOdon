@@ -34,5 +34,15 @@ public class OdontologoService {
         return odontologoRepository.findAll();
     }
 
+    public Optional<Odontologo> buscarOdontologPorMatricula(String matricula){
+        return odontologoRepository.findByNumeroMatricula(matricula);
+    }
 
+    public boolean existeOdontologoPorMatriculaId(String matricula, Long id){
+        var odontologoBuscado = odontologoRepository.findByNumeroMatricula(matricula);
+        if(odontologoBuscado.isPresent() && !odontologoBuscado.get().getId().equals(id)){
+            return true;
+        }
+        return false;
+    }
 }

@@ -25,7 +25,7 @@ public class Turno {
 
     /*El dato es unico por fecha
     * */
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private LocalDate fecha;
 
     //Hora
