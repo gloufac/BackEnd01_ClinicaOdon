@@ -19,13 +19,24 @@ function update_odontologo() {
         body: JSON.stringify(formData)
     }
     fetch(url, settings)
-        .then((response) => response.text())
+        .then((response) => response)
         .then(response => {
-            let successAlert = '<div class="alert alert-success alert-dismissible"><strong>Respuesta</strong> ' + response + ' </div>'
-            document.querySelector('#response').innerHTML = successAlert;
-            document.querySelector('#response').style.display = "block";
+            if (response.status !== 200) {
+                response.text().then((text) => {
+                    let errorAlert = '<div class="alert alert-danger alert-dismissible">' +
+                        '<strong> ' + text + '</strong> </div>'
+                    document.querySelector('#response').innerHTML = errorAlert;
+                    document.querySelector('#response').style.display = "block";
+                });
+                return;
+            } else {
+                response.text().then((text) => {
+                    let successAlert = '<div class="alert alert-success alert-dismissible"><strong>Respuesta</strong> ' + text + ' </div>'
+                    document.querySelector('#response').innerHTML = successAlert;
+                    document.querySelector('#response').style.display = "block";
+                });
+            }
             //window.location.href = "get_odontologos.html";
-
         });
 }
 

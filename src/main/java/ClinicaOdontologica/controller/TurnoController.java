@@ -25,19 +25,29 @@ public class TurnoController {
     @Autowired
     private PacienteService pacienteService;
 
-    // TODO preguntar al profe cuando hay errores en la validacion de datos como se controla
+    /**
+     * Crear turno
+     * @param turno
+     * @return
+     * @throws BadRequestException
+     */
     @PostMapping
     public ResponseEntity<Turno> crearTurno(@RequestBody Turno turno) throws BadRequestException{
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(turno.getPaciente().getId());
         Optional<Odontologo> odontologoBuscado = odontologoService.buscarOdontologoPorId(turno.getOdontologo().getId());
         if (pacienteBuscado.isPresent() && odontologoBuscado.isPresent()) {
-            var algo = turnoService.guardarTurno(turno);
-            algo.setPaciente(pacienteBuscado.get());
-            algo.setOdontologo(odontologoBuscado.get());
-            return ResponseEntity.ok(algo);
+            // validacion de que no exista la misma fecha, odontologo y paciente
+            var turnoBuscados = turnoService.buscarTurnoPorFechaOdontologoPaciente(turno.getFecha(), turno.getOdontologo().getId(), turno.getPaciente().getId());
+            if(turnoBuscados.stream().count() > 0){
+                throw new BadRequestException("El turno ya existe");
+            }
+
+            Turno turnoGuardado = turnoService.guardarTurno(turno);
+            turnoGuardado.setPaciente(pacienteBuscado.get());
+            turnoGuardado.setOdontologo(odontologoBuscado.get());
+            return ResponseEntity.ok(turnoGuardado);
         } else {
             // Bad Request: se requiere el paciente y el odontologo
-            //return ResponseEntity.badRequest().build();
             throw new BadRequestException("No existe el odontologo o paciente relacionado");
         }
     }
@@ -47,6 +57,12 @@ public class TurnoController {
         return ResponseEntity.ok(turnoService.buscarTodos());
     }
 
+    /**
+     * Actualizar datos del turno
+     * @param turno
+     * @return
+     * @throws ResourceNotFoundException
+     */
     @PutMapping
     public ResponseEntity<String> actualizarTurno(@RequestBody Turno turno) throws ResourceNotFoundException{
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(turno.getPaciente().getId());
@@ -57,7 +73,7 @@ public class TurnoController {
             turnoService.actualizarTurno(turno);
             return ResponseEntity.ok("El turno ha sido actualizado");
         } else {
-            throw new ResourceNotFoundException("Id inválido o odontologo y paciente no encontrados");
+            throw new ResourceNotFoundException("Turno u odontologo o paciente no encontrado");
         }
     }
 
@@ -66,7 +82,7 @@ public class TurnoController {
         Optional<Turno> turnoBuscado = turnoService.buscarTurnoPorId(id);
         if(turnoBuscado.isPresent()){
             turnoService.eliminarTurno(id);
-            return ResponseEntity.ok("Ok, el turno ha sido eliminado");
+            return ResponseEntity.ok("El turno ha sido eliminado");
         } else {
             throw new ResourceNotFoundException("Id inválido o el turno no existe");
         }

@@ -6,7 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -38,6 +40,14 @@ public class TurnoService {
 
     public List<Turno> buscarTurnoPorPacienteId(Long pacienteId){
         return turnoRepository.findBypaciente_id(pacienteId);
+    }
+
+    public List<Turno> buscarTurnoPorFechaOdontologoPaciente(LocalDate fecha, Long odontologoId, Long pacienteId){
+        var turnos = turnoRepository.findTurnoByFecha(fecha);
+
+        var turnosFilter = turnos.stream().filter(x -> x.getOdontologo().getId().equals(odontologoId) && x.getPaciente().getId().equals(pacienteId)).toList();
+
+        return turnosFilter;
     }
 
     public List<Turno> buscarTodos(){

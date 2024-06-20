@@ -1,5 +1,6 @@
 package ClinicaOdontologica.controller;
 
+import ClinicaOdontologica.exception.BadRequestException;
 import ClinicaOdontologica.exception.ResourceNotFoundException;
 import ClinicaOdontologica.model.Paciente;
 import ClinicaOdontologica.service.PacienteService;
@@ -23,12 +24,17 @@ public class PacienteController {
      * @return paciente
      */
     @PostMapping
-    public ResponseEntity<Paciente> crearPaciente(@RequestBody Paciente paciente) {
+    public ResponseEntity<Paciente> crearPaciente(@RequestBody Paciente paciente) throws BadRequestException {
         if(paciente != null && !paciente.getNombre().isEmpty() && !paciente.getApellido().isEmpty()
                 && !paciente.getCedula().isEmpty() && !paciente.getEmail().isEmpty()){
-            return ResponseEntity.ok(pacienteService.guardarPaciente(paciente));
+            Optional<Paciente> pacienteBuscadoEmail = pacienteService.buscarPacientePorEmail(paciente.getEmail());
+            if(pacienteBuscadoEmail.isPresent()){
+                throw new BadRequestException("Paciente con email: " + paciente.getEmail() + " ya existe");
+            } else {
+                return ResponseEntity.ok(pacienteService.guardarPaciente(paciente));
+            }
         } else {
-            return ResponseEntity.badRequest().build();
+            throw new BadRequestException("Campos requeridos para crear Paciente: Nombre, Apellido, Cedula, Email");
         }
     }
 
@@ -38,13 +44,17 @@ public class PacienteController {
      * @return
      */
     @PutMapping
-    public ResponseEntity<String> actualizarPaciente(@RequestBody Paciente paciente) {
+    public ResponseEntity<String> actualizarPaciente(@RequestBody Paciente paciente) throws ResourceNotFoundException, BadRequestException {
+
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(paciente.getId()); //necesitamos primeramente validar si existe o  no
         if (pacienteBuscado.isPresent()) {
-            pacienteService.actualizarPaciente(paciente);
-            return ResponseEntity.ok("El paciente se ha actualizado");
+            if(!paciente.getNombre().isEmpty() && !paciente.getApellido().isEmpty() && !paciente.getCedula().isEmpty() && !paciente.getEmail().isEmpty()){
+                pacienteService.actualizarPaciente(paciente);
+                return ResponseEntity.ok("El paciente se ha actualizado");
+            }
+            throw new BadRequestException("Campos requeridos para actualizar el Paciente: Nombre, Apellido, Cedula, Email");
         } else {
-            return ResponseEntity.badRequest().body("No se encontro paciente");
+            throw new ResourceNotFoundException("No se encontró paciente con Id: " + paciente.getId().toString() + " para actualizar");
         }
     }
 
@@ -54,22 +64,22 @@ public class PacienteController {
      * @return paciente
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Paciente> buscarPacientePorId(@PathVariable Long id) {
+    public ResponseEntity<Paciente> buscarPacientePorId(@PathVariable Long id) throws ResourceNotFoundException {
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(id);
         if (pacienteBuscado.isPresent()) {
             return ResponseEntity.ok(pacienteBuscado.get());
         } else {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Paciente con Id: " + id.toString() + " no encontrado");
         }
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<Paciente> buscarPacientePorEmail(@PathVariable String email) {
+    public ResponseEntity<Paciente> buscarPacientePorEmail(@PathVariable String email) throws ResourceNotFoundException {
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorEmail(email);
         if (pacienteBuscado.isPresent()) {
             return ResponseEntity.ok(pacienteBuscado.get());
         } else {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Paciente con Email: " + email + " no encontrado");
         }
     }
 
@@ -87,8 +97,7 @@ public class PacienteController {
                 return ResponseEntity.ok("El paciente se ha eliminado");
             }
         }
-        throw new ResourceNotFoundException("No existe ese id: " + id);
-        //return ResponseEntity.badRequest().body("Id no válido o Paciente no encontrado");
+        throw new ResourceNotFoundException("Paciente con Id: " + id + " no encontrado para eliminar");
     }
 
     /**

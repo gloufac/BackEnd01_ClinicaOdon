@@ -35,34 +35,33 @@ window.addEventListener('load', function () {
             }
 
             fetch(url, settings)
-                .then(response => response.json())
+                .then((response) => response)
                 .then(data => {
-                    //console.log(data);
-                    if(data.status != undefined && data.status !== 200){
-                        let error = data.error;
-                        let errorAlert = '<div class="alert alert-danger alert-dismissible">' +
-                        '<strong> '+error+'</strong> </div>'
-                        document.querySelector('#response').innerHTML = errorAlert;
-                        document.querySelector('#response').style.display = "block";
+                    if(data.status !== 200){
+                        data.text().then((text) => {
+                            let errorAlert = '<div class="alert alert-danger alert-dismissible">' +
+                            '<strong> '+text+'</strong> </div>'
+                            document.querySelector('#response').innerHTML = errorAlert;
+                            document.querySelector('#response').style.display = "block";
+                        });
+                        return;
                     } else {
-                        let successAlert = '<div class="alert alert-success alert-dismissible"><strong>Resultado:</strong> Turno agregado </div>'
-                        document.querySelector('#response').innerHTML = successAlert;
-                        document.querySelector('#response').style.display = "block";
-                        resetUploadForm();
+                        data.json().then((json) => {
+                            let successAlert = '<div class="alert alert-success alert-dismissible"><strong>Resultado:</strong> Turno agregado </div>'
+                            document.querySelector('#response').innerHTML = successAlert;
+                            document.querySelector('#response').style.display = "block";
+                            resetUploadForm();
+                        });
                     }
                 })
                 .catch(error => {
                     let errorAlert = '<div class="alert alert-danger alert-dismissible">' +
                         '<strong> Error intente nuevamente</strong> </div>'
-
                     document.querySelector('#response').innerHTML = errorAlert;
                     document.querySelector('#response').style.display = "block";
-
                     resetUploadForm();
                 })
-
                 event.preventDefault();
-                
         });
 
     }

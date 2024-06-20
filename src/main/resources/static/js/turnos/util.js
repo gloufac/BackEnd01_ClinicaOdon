@@ -57,6 +57,6 @@ function hometurnos() {
 
 function resetUploadForm() {
     document.querySelector('#fecha').value = "";
-    document.querySelector('#lstPacientes').value = "";
-    document.querySelector('#lstOdontologos').value = "";
+    document.querySelector('#lstPacientes').value = "0";
+    document.querySelector('#lstOdontologos').value = "0";
 }

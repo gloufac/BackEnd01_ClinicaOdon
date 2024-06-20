@@ -9,7 +9,7 @@ window.addEventListener('load', function () {
         //se ejecutará la siguiente función
         formulario.addEventListener('submit', function (event) {
             //Si el ID del odontologo es distinto de vacío
-            if(document.querySelector('#odontologo_id').value !== ""){
+            if (document.querySelector('#odontologo_id').value !== "") {
                 update_odontologo();
                 event.preventDefault();
                 return;
@@ -34,30 +34,39 @@ window.addEventListener('load', function () {
             }
 
             fetch(url, settings)
-                .then(response => response.json())
+                .then(response => response)
                 .then(data => {
-                    //Si no hay ningún error, se muestra un mensaje diciendo que el odontologo fue agregado
-
-                    let successAlert = '<div class="alert alert-success alert-dismissible"><strong>Resultado:</strong> Odontologo agregado </div>'
-                    document.querySelector('#response').innerHTML = successAlert;
-                    document.querySelector('#response').style.display = "block";
-                    resetUploadForm();
+                    if (data.status !== 200) {
+                        data.text().then((text) => {
+                            let errorAlert = '<div class="alert alert-danger alert-dismissible">' +
+                                '<strong> ' + text + '</strong> </div>'
+                            document.querySelector('#response').innerHTML = errorAlert;
+                            document.querySelector('#response').style.display = "block";
+                        });
+                        return;
+                    } else {
+                        //Si no hay ningún error, se muestra un mensaje diciendo que el paciente fue agregado
+                        data.json().then((json) => {
+                            //Si no hay ningún error, se muestra un mensaje diciendo que el odontologo fue agregado
+                            let successAlert = '<div class="alert alert-success alert-dismissible"><strong>Resultado:</strong> Odontologo agregado </div>'
+                            document.querySelector('#response').innerHTML = successAlert;
+                            document.querySelector('#response').style.display = "block";
+                            resetUploadForm();
+                        });
+                    }
                 })
 
                 .catch(error => {
                     //Si hay algún error, se muestra un mensaje diciendo que el odontologo no se pudo guardar y se intente nuevamente
                     let errorAlert = '<div class="alert alert-danger alert-dismissible">' +
-                        '<button type="button" class="close"' +
-                        'data-dismiss="alert">&times;</button>' +
                         '<strong> Error intente nuevamente</strong> </div>'
-
                     document.querySelector('#response').innerHTML = errorAlert;
                     document.querySelector('#response').style.display = "block";
 
                     //se dejan todos los campos vacíos por si se quiere ingresar otro paciente
                     resetUploadForm();
                 })
-                event.preventDefault();
+            event.preventDefault();
         });
     }
 });
@@ -69,10 +78,11 @@ function resetUploadForm() {
 }
 
 
-$(document).ready(function(){
-    $("#staticBackdrop").on('hide.bs.modal', function(){
+$(document).ready(function () {
+    $("#staticBackdrop").on('hide.bs.modal', function () {
         resetUploadForm();
         listarOdontologos();
+        document.querySelector('#response').innerHTML = "";
         document.querySelector('#staticBackdropLabel').innerHTML = "Agregar Odontologo";
     });
 });
