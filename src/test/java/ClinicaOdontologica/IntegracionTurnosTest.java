@@ -39,14 +39,13 @@ public class IntegracionTurnosTest {
     public void cargarDatos() {
         Paciente pacienteGuardado = pacienteService.guardarPaciente(new Paciente("Andrea", "Medina", "111111", LocalDate.of(2024, 6, 19), "andrea@gmail.com", new Domicilio("Calle false", 123, "La Rioja", "Costa Rica")));
         Odontologo odontologoGuardado = odontologoService.guardarOdontologo(new Odontologo("123963", "Dayana", "Torres"));
-        Turno turnoGuardado =  turnoService.guardarTurno(new Turno("nuevo Turno", odontologoGuardado, pacienteGuardado,  LocalDate.of(2024,6,19)));
+        Turno turnoGuardado =  turnoService.guardarTurno(new Turno( odontologoGuardado, pacienteGuardado,  LocalDate.of(2024,6,19)));
     }
 
     @Test
     public void listarTodosLosTurnos() throws Exception {
         cargarDatos();
-        MvcResult respuesta = mockMvc.perform(MockMvcRequestBuilders.get("/turno")
-                        .accept(MediaType.APPLICATION_JSON))
+        MvcResult respuesta = mockMvc.perform(MockMvcRequestBuilders.get("/turno").accept(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();

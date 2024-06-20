@@ -30,12 +30,10 @@ public class Turno {
 
     //Hora
 
-//    public Turno() {
-//    }
+    public Turno() {
+    }
 
-
-    public Turno(String nombreturno, Odontologo odontologo, Paciente paciente, LocalDate fecha) {
-        this.nombreturno = nombreturno;
+    public Turno(Odontologo odontologo, Paciente paciente, LocalDate fecha) {
         this.odontologo = odontologo;
         this.paciente = paciente;
         this.fecha = fecha;
