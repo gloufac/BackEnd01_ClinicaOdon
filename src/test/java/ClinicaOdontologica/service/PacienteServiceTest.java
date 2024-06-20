@@ -37,7 +37,7 @@ public class PacienteServiceTest {
     @Test
     @Order(2)
     public void buscarPacientePorId(){
-        Long id= 1L;
+        Long id= 4L;
         Optional<Paciente> pacienteBuscado= pacienteService.buscarPacientePorId(id);
         assertNotNull(pacienteBuscado.get());
     }
@@ -45,11 +45,12 @@ public class PacienteServiceTest {
     @Test
     @Order(3)
     public void actualizarPacienteTest(){
-//      Paciente  paciente = new Paciente("Andrea", "Medina", "111111", LocalDate.of(2024, 6, 19), "andrea@gmail.com", new Domicilio("Calle false", 123, "La Rioja", "Costa Rica"));
-        Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(1L);
+        Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(4L);
         if(pacienteBuscado.isPresent()){
             pacienteBuscado.get().setApellido("Perez");
         }
+        pacienteService.actualizarPaciente(pacienteBuscado.get());
+        assertEquals("Perez", pacienteBuscado.get().getApellido());
     }
 
     @Test
