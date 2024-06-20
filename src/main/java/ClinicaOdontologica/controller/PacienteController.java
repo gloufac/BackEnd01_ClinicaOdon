@@ -39,7 +39,6 @@ public class PacienteController {
      */
     @PutMapping
     public ResponseEntity<String> actualizarPaciente(@RequestBody Paciente paciente) {
-
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(paciente.getId()); //necesitamos primeramente validar si existe o  no
         if (pacienteBuscado.isPresent()) {
             pacienteService.actualizarPaciente(paciente);
