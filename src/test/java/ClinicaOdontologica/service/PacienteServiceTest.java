@@ -15,8 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -31,8 +30,8 @@ public class PacienteServiceTest {
     @Order(1)
     public void guardarPaciente() {
         Paciente  paciente = new Paciente("Andrea", "Medina", "111111", LocalDate.of(2024, 6, 19), "andrea@gmail.com", new Domicilio("Calle false", 123, "La Rioja", "Costa Rica"));
-        Paciente Pacienteguardado = pacienteService.guardarPaciente(paciente);
-        assertEquals(1L, paciente.getId());
+        Paciente pacienteGuardado = pacienteService.guardarPaciente(paciente);
+        assertEquals(4L, pacienteGuardado.getId());
     }
 
     @Test
@@ -57,12 +56,15 @@ public class PacienteServiceTest {
     @Order(4)
     public void buscarTodos(){
     List<Paciente> pacientes = pacienteService.buscarTodos();
-    assertEquals(1, pacientes.size());
+    assertEquals(4, pacientes.size());
     }
 
-//    @Test
-//    @Order(5)
-//    public  void eliminarPaciente(){
-//
-//    }
+    @Test
+    @Order(5)
+    public  void eliminarPaciente(){
+        pacienteService.eliminarPaciente(4L);
+        Optional<Paciente> pacienteBuscado= pacienteService.buscarPacientePorId(4L);
+        assertFalse(pacienteBuscado.isPresent());
+
+    }
 }
