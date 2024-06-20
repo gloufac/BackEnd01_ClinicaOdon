@@ -28,11 +28,14 @@ public class PacienteController {
         if(paciente != null && !paciente.getNombre().isEmpty() && !paciente.getApellido().isEmpty()
                 && !paciente.getCedula().isEmpty() && !paciente.getEmail().isEmpty()){
             Optional<Paciente> pacienteBuscadoEmail = pacienteService.buscarPacientePorEmail(paciente.getEmail());
+            Optional<Paciente> pacienteBuscadoCedula = pacienteService.buscarPacientePorCedula(paciente.getCedula());
             if(pacienteBuscadoEmail.isPresent()){
                 throw new BadRequestException("Paciente con email: " + paciente.getEmail() + " ya existe");
-            } else {
-                return ResponseEntity.ok(pacienteService.guardarPaciente(paciente));
             }
+            if(pacienteBuscadoCedula.isPresent()){
+                throw new BadRequestException("Paciente con cedula: " + paciente.getCedula() + " ya existe");
+            }
+            return ResponseEntity.ok(pacienteService.guardarPaciente(paciente));
         } else {
             throw new BadRequestException("Campos requeridos para crear Paciente: Nombre, Apellido, Cedula, Email");
         }
@@ -49,6 +52,12 @@ public class PacienteController {
         Optional<Paciente> pacienteBuscado = pacienteService.buscarPacientePorId(paciente.getId()); //necesitamos primeramente validar si existe o  no
         if (pacienteBuscado.isPresent()) {
             if(!paciente.getNombre().isEmpty() && !paciente.getApellido().isEmpty() && !paciente.getCedula().isEmpty() && !paciente.getEmail().isEmpty()){
+                if(pacienteService.existePacientePorEmailId(paciente.getEmail(), paciente.getId())){
+                    throw new BadRequestException("Paciente con email: " + paciente.getEmail() + " ya existe en otro paciente");
+                }
+                if(pacienteService.existePacientePorCedulaId(paciente.getCedula(), paciente.getId())){
+                    throw new BadRequestException("Paciente con cedula: " + paciente.getCedula() + " ya existe en otro paciente");
+                }
                 pacienteService.actualizarPaciente(paciente);
                 return ResponseEntity.ok("El paciente se ha actualizado");
             }

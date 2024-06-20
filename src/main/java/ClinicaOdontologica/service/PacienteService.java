@@ -25,8 +25,28 @@ public class PacienteService {
         return pacienteRepository.findById(id);
     }
 
+    public Optional<Paciente> buscarPacientePorCedula(String cedula){
+        return pacienteRepository.findByCedula(cedula);
+    }
+
+    public boolean existePacientePorCedulaId(String cedula, Long id){
+        var pacienteCedula = pacienteRepository.findByCedula(cedula);
+        if(pacienteCedula.isPresent() && !pacienteCedula.get().getId().equals(id)){
+            return true;
+        }
+        return false;
+    }
+
     public Optional<Paciente> buscarPacientePorEmail(String email){
         return pacienteRepository.findByEmail(email);
+    }
+
+    public boolean existePacientePorEmailId(String email, Long id){
+        var pacienteEmail = pacienteRepository.findByEmail(email);
+        if(pacienteEmail.isPresent() && !pacienteEmail.get().getId().equals(id)){
+            return true;
+        }
+        return false;
     }
 
     public void eliminarPaciente(Long id){

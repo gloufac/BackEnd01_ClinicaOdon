@@ -31,6 +31,10 @@ public class OdontologoController {
     @PostMapping
     public ResponseEntity<Odontologo> guardarOdontologo(@RequestBody Odontologo odontologo) throws BadRequestException {
         if(!odontologo.getNombre().isEmpty() && !odontologo.getApellido().isEmpty() && !odontologo.getNumeroMatricula().isEmpty()){
+            Optional<Odontologo> odontologoPorMatricula = odontologoService.buscarOdontologPorMatricula(odontologo.getNumeroMatricula());
+            if(odontologoPorMatricula.isPresent()){
+                throw new BadRequestException("Odontologo con matricula: " + odontologo.getNumeroMatricula() + " ya existe");
+            }
             return ResponseEntity.ok(odontologoService.guardarOdontologo(odontologo));
         } else {
             throw new BadRequestException("Campos requeridos para crear Odontologo: Nombre, Apellido, Numero Matricula");
@@ -47,6 +51,9 @@ public class OdontologoController {
         Optional<Odontologo> odontologoBuscado = odontologoService.buscarOdontologoPorId(odontologo.getId());
         if (odontologoBuscado.isPresent()) {
             if(!odontologo.getNombre().isEmpty() && !odontologo.getApellido().isEmpty() && !odontologo.getNumeroMatricula().isEmpty()){
+                if(odontologoService.existeOdontologoPorMatriculaId(odontologo.getNumeroMatricula(), odontologo.getId())){
+                    throw new BadRequestException("Odontologo con matricula: " + odontologo.getNumeroMatricula() + " ya existe en otro odontologo");
+                }
                 odontologoService.actualizarOdontologo(odontologo);
                 return ResponseEntity.ok("Odontologo ha sido actualizado");
             }

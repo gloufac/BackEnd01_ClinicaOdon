@@ -53,6 +53,8 @@ public class ConfigWebSecurity {
                         .requestMatchers(antMatcher(HttpMethod.GET, "/paciente")).hasAnyRole("ADMIN", "USER")
                         .requestMatchers(antMatcher(HttpMethod.PUT, "/paciente")).hasRole("ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.DELETE, "/paciente")).hasRole("ADMIN")
+                        .requestMatchers(antMatcher("/pacientes/get_pacientes.html")).hasRole("ADMIN")
+                        .requestMatchers(antMatcher("/odontologos/get_odontologos.html")).hasRole("ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.POST, "/odontologo")).hasRole("ADMIN")
                         .requestMatchers(antMatcher(HttpMethod.GET, "/odontologo")).hasAnyRole("ADMIN", "USER")
                         .requestMatchers(antMatcher(HttpMethod.PUT, "/odontologo")).hasRole("ADMIN")
